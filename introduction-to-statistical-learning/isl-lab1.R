@@ -64,3 +64,7 @@ identify(dat$TV, dat$sales) # lets you mark points with the mouse
 
 summary(dat) # create a summary, duhh
 # savehistory()
+
+# n*(1-max(X)) is distributed exponentially(1), where X is uniform(0, 1) random variable
+x = sapply(1:2000, function(x) {return(600*(1-max(runif(600))))} )
+hist(x)

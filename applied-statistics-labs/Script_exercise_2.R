@@ -3,11 +3,28 @@
         
 rm(list = ls()) # rm() -----> remove objects; ls() -----> list of all objects
 
-norm.contaminated.sample <-function(mu1,sigma1,mu2=0,sigma2=1,proportion=1/2,size=1){
-  p=runif(size,0,1)>proportion;
-  return(rnorm(size,mu1+(mu2-mu1)*p,sigma1+(sigma2-sigma1)*p))
+norm.contaminated.sample <- function(mu1, sigma1, mu2 = 0, sigma2 = 1, proportion = 1/2, size=1) {
+  p = runif(size, 0, 1) > proportion;
+  return(rnorm(size, mu1 + (mu2 - mu1)*p, sigma1 + (sigma2-sigma1)*p))
 }
-norm.contaminated.sample(100,1,proportion=1/5,size=20)
+
+generate.contaminated = function (n, prop, mu1=0, sigma1=1, mu2 = 0, sigma2 = 1) {
+  u = runif(n, 0, 1)
+  rand.samples = rep(NA, n)
+  for (i in 1:n) {
+    if (u[i] < prop) {
+      rand.samples[i] = rnorm(1, mu1, sigma1)
+    } else {
+      rand.samples[i] = rnorm(1, mu2, sigma2)
+    }
+  }
+  return(rand.samples)
+}
+
+x = generate.contaminated(n=100, prop=1/5, mu1=0, sigma1=1, mu2=4, sigma2=1)
+y = norm.contaminated.sample(100, 1, proportion=1/5, size=20)
+plot(density(x), main="Density Estimate of the Mixture Model")
+plot(density(y), main="Density Estimate of the Mixture Model")
 
                                             ### Задача 1 ###
 # Като използвате функцията norm.contaminated.sample(), генерирайте 100 проявления на случайната 
@@ -28,7 +45,7 @@ boxplot(data,col = "lightgrey",outcol="red", outlwd=2)
 d=density(data,bw="SJ")
 h=hist(data,prob=TRUE)
 lines(d,col='blue',lwd=2)
-curve(dnorm(x, mean=mean(data), sd=sd(data)), add=TRUE, col=2,lwd=2)
+curve(dnorm(data, mean=mean(data), sd=sd(data)), add=TRUE, col=2,lwd=2)
 (mu=mean(data))
 (sd=sd(data))
 (tStat=sqrt(n)*(mu-1)/sd)
@@ -47,21 +64,28 @@ ks.test(data,"pnorm")
 # Student разпределение според входните аргументи. Направете проверка за входната стойност 
 # на аргумета confLevel.
 
-meanCI = function(x,sigma=sd(x),confLevel=0.95){
-  if (confLevel>=1 || confLevel<=0)
-  {return ("The value of confLevel should be in the interval (0,1)")}
-  else{
-    n = length(x)
-    meanX = mean(x)
-    alpha = 1 - confLevel
-    se = sigma/sqrt(n)
-    if (missing(sigma))       
-    {cv = qt(1-alpha/2,df=n-1)}
-    else {cv=qnorm(1-alpha/2)}
-    return(c(lowerBound=meanX-cv*se,upperBound=meanX+cv*se))
+conf.interval = function (x, confLevel = 0.95, sigma = sd(x)) {
+  alpha = 1 - confLevel
+  n = length(x)
+  xbar = mean(x)
+  se = sigma / sqrt(n)
+  
+  # calculate the critical value
+  if (missing(sigma)) {
+    critical.value = qt(1-alpha/2, df=n-1)
+  } else {
+    critical.value = qnorm(1-alpha/2)
   }
+
+  lower = xbar - (critical.value * se)
+  upper = xbar + (critical.value * se)
+
+  return(c(lower=lower, upper=upper))
 }
+
 ### test it
 x=rnorm(100,0,1.5)
 meanCI(x)
 meanCI(x,sd(x))                                        
+
+conf.interval(x)

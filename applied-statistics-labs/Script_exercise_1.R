@@ -261,7 +261,8 @@ square.approx.Pi = function (trials = 1000) {
   ys = runif(trials, -1, 1)
 
   successes = sum(xs^2 + ys^2 <= 1)
-  approximation = 4 * (successes / trials) 
+  proportion = (successes / trials)
+  approximation = 4 * proportion
 
   return(approximation)
 }
@@ -274,26 +275,26 @@ square.approx.Pi(5000)
 # стандартното отклонение, първия и третия квартил. Сравнете получените оценки за 
 # очакване и дисперсия с теоретичните. Като използвате ЦГТ, постройте 95% доверителен интервал
 # за очакването на approx.Pi.
-n=10000
-trials=100
+n = 10000
+trials = 100
 
-approx.Pi=numeric(n)
-for(i in 1:n){
-  approx.Pi[i]=square.approx.Pi(trials);
+approx.Pi = numeric(n)
+for(i in 1:n) {
+  approx.Pi[i] = square.approx.Pi(trials);
 }
-# approx.Pi=sapply(rep(trials,n),square.approx.Pi)
+# approx.Pi = sapply(rep(trials,n),square.approx.Pi)
 
 min(approx.Pi)
 max(approx.Pi)
 mean(approx.Pi)
 pi # Theoretical mean
 median(approx.Pi)
-sd(approx.Pi)
-sqrt(pi*(4-pi)/trials) # Theoretical standard deviation
+sd(approx.Pi) # emperical standard deviation of 4 * sample  proportion
+th_sd = sqrt(pi*(4-pi) / (trials)) # Theoretical standard deviation of 4 * sample proportion
 summary(approx.Pi)
 
-alpha=0.05
-th.limits=c(lower.bound=qnorm(alpha/2,mean=pi,sd=sqrt(pi*(4-pi)/trials),lower.tail = TRUE),
+alpha = 0.05
+th.limits=c(lower.bound = qnorm(alpha/2,mean=pi,sd=sqrt(pi*(4-pi)/trials),lower.tail = TRUE),
            upper.bound=qnorm(alpha/2,mean=pi,sd=sqrt(pi*(4-pi)/trials),lower.tail = FALSE))
 th.limits
 emp.limits=c(lower.bound=qnorm(alpha/2,mean=mean(approx.Pi),sd=sd(approx.Pi),lower.tail = TRUE),
@@ -304,7 +305,7 @@ boxplot(approx.Pi)
 hist(approx.Pi,probability = TRUE)
 
 # beta and inverse integral transform
-u = runif(20000);  x = sqrt(u)
+u = runif(20000); x = sqrt(u)
 par(mfrow=c(1,2))
 cutp.u = seq(0, 1, by=.1)
 hist(u, prob=T, ylim=c(0,2), br=cutp.u, col=rainbow(12), main="UNIF(0,1)")

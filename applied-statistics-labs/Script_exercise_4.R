@@ -157,34 +157,35 @@ chisq.test(t,p=rep(1/n,n))
 # Симулирайте хвърляне на правилен зар и проверете дали получените честоти съвпадат 
 # с теоретично очакваните. Повторете симулацията за правилен и неправилен зар.
 
-roll=as.factor(sample(1:6,size=100,replace=TRUE))
+roll = as.factor(sample(1:6, size=100, replace=TRUE))
 (freq = table(roll))
-probs = c(1,1,1,1,1,1)/6 # or use rep(1/6,6)
-chisq.test(freq,p=probs)
+probs = rep(1/6, 6)
+chisq.test(freq, p = probs)
 
 dieFair = as.factor(sample(1:6,100,p=c(1,1,1,1,1,1)/6,replace=T))
 dieBias = as.factor(sample(1:6,100,p=c(0.5,0.5,0.5,1.5,1.5,1.5)/6,replace=T))
-chisq.test(dieBias,dieFair) # WRONG!!!!
+chisq.test(dieBias, dieFair) # WRONG!!!!
 tFair = table(dieFair)
 tBias = table(dieBias)
 chisq.test(rbind(tFair,tBias))
 ##############################################################################################
-
-riffle.shuffle<-function(cards){
-  N=length(cards);
-  split=rbinom(1, N, 1/2);
-  if (split==0 | split==N) {return(cards);}
-  c1=0;
-  c2=0;
-  result=integer(N);
+riffle.shuffle <- function (cards) {
+  N = length(cards);
+  split = rbinom(1, N, 1/2);
+  if (split == 0 | split == N) {
+    return(cards);
+  }
+  c1 = 0;
+  c2 = 0;
+  result = integer(N);
   for (i in 1:N){
-    if (runif(1)<(split-c1)/(N-c1-c2)){
-      c1=c1+1;
-      result[i]=cards[c1];
+    if (runif(1) < (split-c1) / (N-c1-c2)){
+      c1 = c1 + 1;
+      result[i] = cards[c1];
     }
-    else{
-      c2=c2+1;
-      result[i]=cards[split+c2];
+    else {
+      c2 = c2+1;
+      result[i] = cards[split+c2];
     }
   }
   return(result);
@@ -209,11 +210,15 @@ manipulate({plot(c(rf[1:x],x-sum(rf[1:x]<split)+(sum(rf[1:x]<split)+1):(split-1)
            text(c(rf[1:x],x-sum(rf[1:x]<split)+(sum(rf[1:x]<split)+1):(split-1),(split+x-sum(rf[1:x]<split)):N), labels=c(rf[1:x],sort(rf[(x+1):N])), cex= 1.25, pos=1+2*(c(rf[1:x],sort(rf[(x+1):N]))<split))},           
            x=slider(1,N))
 
+############################################### for homework ############################
                                                     ### Задача 8 ###
 # Като използвате функцията riffle.shuffle() и хи-квадрат тест за съгласуваност, намерете колко пъти е необходимо
 # да се приложи riffle shuffle за да се разбърка едно тесте карти по случаен начин.
 
+m = 
 
-
+for(i in 1:100) {
+  m = max(runif(300)) 
+}
 
                                       

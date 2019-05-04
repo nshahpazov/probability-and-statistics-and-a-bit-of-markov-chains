@@ -137,10 +137,6 @@ some_table = table(frame_mtcars[, c(2,8)])
 
 write.csv2(some_table, file = "Data/Engines.csv")
 
-
-
-
-
 data_mtcars=read_excel(datasets,sheet = 2)
 str(data_mtcars)
 data_mtcars=data.frame(data_mtcars)
