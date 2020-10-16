@@ -7,11 +7,16 @@ data("thuesen", package = "ISwR")
 str(thuesen)
 edit(thuesen)
 options(na.action=na.omit) # omit NA's
+
+# attach coppies the object of thuesen and adds them to the environment
 attach(thuesen)
 summary(thuesen)
 plot(blood.glucose, short.velocity, xlim=c(0,20), ylim=c(1,2))
+
+# lm(y ~ x)
 lm(short.velocity ~ blood.glucose)
 model1 = lm(short.velocity ~ blood.glucose)
+abline(model1)
 detach(thuesen)
 theFormula = short.velocity ~ blood.glucose
 model1 = lm(formula = theFormula,data=thuesen)
@@ -20,11 +25,11 @@ str(model1)
 summary(model1)               # analysis summary
 abline(model1)                # add regression line
 coef(model1)                  # regression coefficients
-confint(model1,level = 0.95)  # confidence interval for regression coefficients
+confint(model1, level = 0.95)  # confidence interval for regression coefficients
 resid(model1)                 # residuals
 fitted(model1)                # fitted values
-deviance(model1)              # residual sum of squares
-predict(model1,newdata=ndat)  # predict for new data
+deviance(model1)              # residual sum of squares RSS
+predict(model1, newdata=ndat)  # predict for new data
 
 predict(model1)
 x=as.data.frame(thuesen$blood.glucose[is.na(thuesen$short.velocity)])
@@ -32,7 +37,7 @@ names(x)="blood.glucose"
 predict(model1,newdata=x)
 sum(coef(model1)*c(1,as.numeric(x)))
 
-plot(fitted(model1),resid(model1))
+plot(fitted(model1), resid(model1))
 qqnorm(resid(model1))
 
 plot(thuesen$blood.glucose, thuesen$short.velocity, xlim=c(0,20), ylim=c(1,2))
@@ -64,10 +69,10 @@ segments(thuesen$blood.glucose,fitted(model1), thuesen$blood.glucose,thuesen$sho
 
 options(na.action=na.omit)
 alpha=0.10
-model1=lm(short.velocity ~ blood.glucose,data=thuesen)
+model1=lm(short.velocity ~ blood.glucose,data = thuesen)
 residuals1=resid(model1)
 se=sqrt(sum(residuals1^2)/(model1$df.residual))
-cv=qnorm(alpha/2,0,se,lower.tail=TRUE)
+cv = qnorm(alpha/2,0,se,lower.tail=TRUE)
 mv = is.na(thuesen$short.velocity)
 plot(thuesen$blood.glucose[!mv], thuesen$short.velocity[!mv], 
      col = 1+(abs(residuals1)>=abs(cv)), pch=16, xlim=c(0,20), ylim=c(1,2))

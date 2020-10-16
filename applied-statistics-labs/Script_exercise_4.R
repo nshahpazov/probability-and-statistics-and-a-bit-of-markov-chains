@@ -8,7 +8,7 @@ rm(list = ls())                ########### Statistical test ##########
 # generate 100 normally distributed observations
 normal <-rnorm(100)
 # with a bigger n the empirical will be more and more similar to the theoretical
-hist(normal,probability = TRUE)
+hist(normal ,probability = TRUE)
 
 quantile(normal, probs = seq(0, 1, 0.125))
 

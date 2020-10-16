@@ -13,6 +13,7 @@ summary(lm.fit)
 plot(lstat,medv)
 par(mfrow=c(2,2))
 plot(lm.fit)
+
 plot(predict(lm.fit), residuals(lm.fit))
 plot(predict(lm.fit), rstudent(lm.fit))
 plot(hatvalues(lm.fit))
@@ -20,13 +21,15 @@ par(mfrow=c(1,1))
 which.max(hatvalues(lm.fit))
 
 # Non-linear transform
-lm.fit2=lm(medv~lstat+I(lstat^2))
+lm.fit2 = lm(medv~lstat + I(lstat^2))
 summary(lm.fit2)
 lm.fit=lm(medv~lstat)
-anova(lm.fit,lm.fit2)
+anova(lm.fit, lm.fit2)
 par(mfrow=c(1,1))
 plot(lm.fit2)
-lm.fit5=lm(medv~poly(lstat,5))
+
+# n = 5 is for ilustration instead of using I(x^n)
+lm.fit5 = lm(medv~poly(lstat, 5))
 summary(lm.fit5)
 summary(lm(medv~log(rm)))
 detach(Boston)
@@ -111,20 +114,45 @@ c("Stat"=bartlett_stat,"p.value"=bartlett_p.value)
 #####################################################################################################
 
 set.seed(1)
-x1=runif(100)
-x2=0.5*x1+rnorm(100)/10
-y=2+2*x1+0.3*x2+rnorm(100)
+x1 = runif(100)
+x2 = 0.5*x1 + rnorm(100)/10       # error is n(0, 1/100)
+y  = 2 + 2*x1 + 0.3*x2 + rnorm(100)
                                             #### Задача 2 ####
 # Намерете корелацията между х1 и х2 и начертайте scatterplot, за да изобразите връзката между двете
 # променливи. Значими ли са коефициентите пред х1 и х2 в модела y~x1+x2 ? А в моделите y~x1 и y~x2?
 # Обяснете получените резултати.
 
+cor(x1, x2)
+plot(x1, x2)
 
+summary(lm(y~x1+x2))
+plot(lm(y~x1+x2))
 
+plot(x1, y)
+abline(lm(y ~ x1))
 
-
+plot(x2, y)
+abline(lm(y ~ x2))
 
 ####################################################################################################
+# problem 7.9 in statistical inference of casella-berger
+
+alpha.estimator = function (x) {
+  n = length(x)
+  den = n * log(max(x)) - log(prod(x))
+  return(n / den)
+}
+
+lengths.of.eggs = c(22.0, 23.9, 20.9, 23.8, 25.0, 24, 21.7, 23.8, 22.8, 23.1, 23.1, 23.5, 23, 23)
+alpha.estimator(lengths.of.eggs)
+max(lengths.of.eggs)
 
 
 
+mle.bernoulli = function (theta) {
+  x = rbern(100, theta)
+  n = length(n)
+  s = sum(x)
+  return(s * log(theta) + (n-s)*log(1-theta))
+}
+# 0.5398-.46017 = 0.07963

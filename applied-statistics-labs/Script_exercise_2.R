@@ -72,7 +72,7 @@ conf.interval = function (x, confLevel = 0.95, sigma = sd(x)) {
   
   # calculate the critical value
   if (missing(sigma)) {
-    critical.value = qt(1-alpha/2, df=n-1)
+    critical.value = qt(1-alpha/2, df=n - 1)
   } else {
     critical.value = qnorm(1-alpha/2)
   }
@@ -89,3 +89,15 @@ meanCI(x)
 meanCI(x,sd(x))                                        
 
 conf.interval(x)
+
+# binom test course project problem 0
+binom.test(2,10,(1/2), alternative="two.sided")
+
+############ course project - problem 10 Wilcoxon Signed-Ranks Test
+n = 15
+s = sqrt(n*(n+1)*(2*n+1)/24)
+w = 14
+numerator = w - (n*(n+1)/4)
+z = numerator / s
+2 * pvalue
+# pval = 0.09668

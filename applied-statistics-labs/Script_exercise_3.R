@@ -108,6 +108,12 @@ y
 library(readxl)
 datasets<-system.file("extdata/datasets.xlsx",package = "readxl")
 data_iris=read_excel(datasets)
+data_mtcars = read_excel(datasets, sheet=2)
+frame_mtcars = data.frame(data_mtcars)
+frame_mtcars[,2] = as.factor(frame_mtcars[2])
+frame_mtcars[,8] = as.factor(frame_mtcars[,8])
+levels(frame_mtcars[,2]) = c("4cyl", "6cyl", "8cyl")
+table(frame_mtcars[,2], frame_mtcars[,8])
 
 ### Задача 1 ###  
 # Запишете данните от втория sheet на файла от datasets в променлива data_mtcars.  
@@ -124,7 +130,7 @@ levels(frame_mtcars[,2])=c("4cyl","6cyl","8cyl")
 str(frame_mtcars)
 table(frame_mtcars[,2],frame_mtcars[,8])
 
-export.csv
+# export.csv
 frame_mtcars[,c(2,8)] = frame_mtcars[,c(2,8)] + 100
 
 # change the names
@@ -148,12 +154,14 @@ str(data_mtcars)
 levels(data_mtcars[,2])<-c("4-Cylinder","6-Cylinder","8-Cylinder")
 levels(data_mtcars[,8])<-c("V-shaped","Standard")
 tab<-table(data_mtcars[,2],data_mtcars[,8])
-write.csv2(tab,file = "Data/Engines.csv")
+write.csv2(tab, file = "./Engines.csv")
 ###############################################################################################
 
 ########### Statistical test ##########
 
-normal<-rnorm(100)
+normal <- rnorm(100)
+normal = rcaucy(100)
+normal = rexp(100)
 hist(normal,probability = TRUE)
 qqnorm(normal,main = "Normal Dist")
 qqline(normal,col=2)
@@ -172,12 +180,6 @@ shapiro.test(tdist)
 # разпределение на mpg. Какви изводи може да направите? 
 
 
-
-
-
-
-
-
 ##############################################################################################
 
 ### Задача 3 ###  
@@ -187,13 +189,13 @@ shapiro.test(tdist)
 data(sleep)
 ?sleep
 sleep_wide <- data.frame(
-  ID=1:10,
-  group1=sleep$extra[1:10],
-  group2=sleep$extra[11:20]
+  ID = 1:10,
+  group1 = sleep$extra[1:10],
+  group2 = sleep$extra[11:20]
 )
-count.plus=sum((sleep_wide$group1-sleep_wide$group2)>=0);
-n=length(sleep_wide$group1);
-binom.test(count.plus,n,0.5,alternative = c("two.sided"))
+count.plus = sum((sleep_wide$group1 - sleep_wide$group2)>=0);
+n = length(sleep_wide$group1);
+binom.test(count.plus, n, 0.5, alternative = c("two.sided"))
 
 ##############################################################################################
 ndata<-rnorm(1000,mean = mean(mtcars$mpg), sd= sd(mtcars$mpg))

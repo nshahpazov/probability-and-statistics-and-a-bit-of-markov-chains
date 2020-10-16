@@ -77,3 +77,20 @@ hist(y2000, breaks = br, probability = T);
 d = density(y2000);
 lines(d, col="#9911AA");
 
+# example of likelihood function of geometric distribution
+
+fgeo = function (p) {
+  x = rgeom(10, p=2/5)
+  n = length(x)
+  failures = (1-p)^(sum(x)-n)
+  
+  return(failures*p^n)
+}
+probs = seq(0, 1, 0.001)
+plot(probs, fgeo(probs), type="l")
+
+# seber problem 3a1
+x = t(matrix(c(1, -1, 1, 1, 0, -2, 1,1,1), nrow=3, ncol=3))
+xtx = t(x) %*% x
+inv = t(matrix(c(1/3, )))
+

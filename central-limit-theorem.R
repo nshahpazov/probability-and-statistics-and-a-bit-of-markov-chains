@@ -17,3 +17,14 @@ gen.binom = function (n, p) {
 
 d = sapply(1:n,  function (x) (gen.binom(n, 0.5)))
 hist(d, prob=T)
+
+s = 0
+n=10000
+k=100
+for (i in 1:n) {
+  xs = rnorm(k, 40, 500)
+  s = s + mean(xs)
+}
+
+expected_xbar = s/n
+
